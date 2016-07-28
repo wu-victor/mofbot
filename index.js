@@ -30,14 +30,19 @@ app.post("/webhook", function (request, response) {
         if (responseType === "RATES") {
           sendRates(event.sender.id);
         } else if (responseType === "DIFFICULTY") {
-          sendPaymentPlan(event.sender.id);
+          sendDifficulty(event.sender.id);
         } else if (responseType === "NEXT_PAYMENT") {
           sendNextPayment(event.sender.id);
         } else {
           sendMessage(event.sender.id, {text: "Sentiment response"});
         }
       } else if (event.postback) {
-          sendMessage(event.sender.id, {text: event.postback.payload});
+        var payload = event.postback.payload;
+        if (payload === "PAYMENT_HOLIDAY") {
+          sendPaymentHoliday(event.sender.id);
+        } else {
+          sendPaymentPlan(event.sender.id);
+        }
       }
   }
   response.sendStatus(200);
@@ -65,15 +70,15 @@ function sendRates(recipientId) {
     }
   };
   sendMessage(recipientId, message);
-}
+};
 
-function sendPaymentPlan(recipientId) {
+function sendDifficulty(recipientId) {
   var message = {
     "attachment":{
       "type": "template",
       "payload":{
         "template_type": "button",
-        "text": "We are sorry to hear that you are having financial difficulty. We can offer you a",
+        "text": "Sorry to hear you are having financial difficulty. Would you like a",
         "buttons":[
           {
             "type": "postback",
@@ -90,7 +95,15 @@ function sendPaymentPlan(recipientId) {
     }
   }
   sendMessage(recipientId, message);
-}
+};
+
+function sendPaymentHoliday(recipientId) {
+  sendMessage(recipientId, {text: "We've canceled your next payment for this one time"});
+};
+
+function sendPaymentPlan(recipientId) {
+  sendMessage(recipientId, {text: "Call us at (312) 843-7692 and let's chat"});
+};
 
 function sendNextPayment(recipientId) {
   sendMessage(recipientId, {text:
@@ -99,7 +112,7 @@ function sendNextPayment(recipientId) {
     + "Date: August 15, 2016\n"
     + "With: Visa debit card ending in 4215\n"
   });
-}
+};
 
 function sendMessage(recipientId, message) {
   request({
