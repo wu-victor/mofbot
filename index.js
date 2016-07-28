@@ -130,7 +130,7 @@ function sendSentimentResponse(recipientId, message) {
   }
   var sentimentScore = 0;
   if (wordCount > 0) {
-    sentimentScore = 'happy' + (cumScore * 1.0 / wordCount);
+    sentimentScore = cumScore * 1.0 / wordCount;
   }
   var sentimentResponse = "";
   if (sentimentScore <= -4.5) {
