@@ -37,7 +37,7 @@ app.post("/webhook", function (request, response) {
         } else if (responseType === "NEXT_PAYMENT") {
           sendNextPayment(event.sender.id);
         } else {
-          sendSentiment(event.sender.id, event.message.text);
+          sendSentimentResponse(event.sender.id, event.message.text);
         }
       } else if (event.postback) {
         var payload = event.postback.payload;
@@ -117,7 +117,7 @@ function sendNextPayment(recipientId) {
   });
 };
 
-function sendSentiment(recipientId, message) {
+function sendSentimentResponse(recipientId, message) {
   var words = message.split(" ");
   var cumScore = 0;
   var wordCount = 0;
@@ -128,8 +128,23 @@ function sendSentiment(recipientId, message) {
       wordCount++;
     }
   }
-  var sentiment = 'happy!' + (cumScore * 1.0 / wordCount);
-  sendMessage(recipientId, {text: sentiment});
+  var sentimentScore = 0;
+  if (wordCount > 0) {
+    sentimentScore = 'happy' + (cumScore * 1.0 / wordCount);
+  }
+  var sentimentResponse = "";
+  if (sentimentScore < -5.0) {
+    sentimentResponse = "Terribly sorry for the poor service. Please call us at (312) 843-7692";
+  } else if ((-5.0 <= sentimentScore) && (sentimentScore < -1.0)) {
+    sentimentResponse = "Apologize for the inconvenience. Please call us at (312) 843-7692";
+  } else if ((-1.0 <= sentimentScore) && (sentimentScore < 1.0)) {
+    sentimentResponse = "Thank you for the feedback";
+  } else if ((1.0 <= sentimentScore) && (sentimentScore < 5.0)) {
+    sentimentResponse = "Great! Thanks for reaching out";
+  } else {
+    sentimentResponse = "Fantastic. We'll pass the good news along"
+  }
+  sendMessage(recipientId, {text: sentimentResponse});
 };
 
 function sendMessage(recipientId, message) {
