@@ -133,18 +133,18 @@ function sendSentimentResponse(recipientId, message) {
     sentimentScore = 'happy' + (cumScore * 1.0 / wordCount);
   }
   var sentimentResponse = "";
-  if (sentimentScore < -5.0) {
+  if (sentimentScore <= -4.5) {
     sentimentResponse = "Terribly sorry for the poor service. Please call us at (312) 843-7692";
-  } else if ((-5.0 <= sentimentScore) && (sentimentScore < -1.0)) {
+  } else if ((-4.5 < sentimentScore) && (sentimentScore <= -1.0)) {
     sentimentResponse = "Apologize for the inconvenience. Please call us at (312) 843-7692";
-  } else if ((-1.0 <= sentimentScore) && (sentimentScore < 1.0)) {
+  } else if ((-1.0 < sentimentScore) && (sentimentScore <= 1.0)) {
     sentimentResponse = "Thank you for the feedback";
-  } else if ((1.0 <= sentimentScore) && (sentimentScore < 5.0)) {
+  } else if ((1.0 < sentimentScore) && (sentimentScore <= 4.5)) {
     sentimentResponse = "Great! Thanks for reaching out";
   } else {
     sentimentResponse = "Fantastic. We'll pass the good news along"
   }
-  sendMessage(recipientId, {text: sentimentResponse});
+  sendMessage(recipientId, {text: sentimentResponse + cumScore + "|" + wordCount});
 };
 
 function sendMessage(recipientId, message) {
