@@ -33,8 +33,13 @@ app.post('/webhook', function (request, response) {
         var responseType = getResponseType(event.message.text);
         if (responseType === 'RATES') {
           sendMessage(event.sender.id, {text: 'These are MOF\'s awesome rates!'});
+        } else if (responseType === 'PAYMENT_PLAN') {
+          sendMessage(event.sender.id, {text: 'You have options'});
+        } else if (responseType === 'NEXT_PAYMENT') {
+          sendMessage(event.sender.id, {text: 'Your next payment'});
+        } else {
+          sendMessage(event.sender.id, {text: 'Sentiment response'});
         }
-        sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
       }
   }
   response.sendStatus(200);
@@ -43,6 +48,10 @@ app.post('/webhook', function (request, response) {
 function getResponseType(message) {
   if (message.toLowerCase().includes('rate')) {
     return 'RATES';
+  } else if (message.toLowerCase().includes('can\'t pay') || message.toLowerCase().includes('cannot pay')) {
+    return 'PAYMENT_PLAN';
+  } else if (message.toLowerCase().includes('next payment')) {
+    return 'NEXT_PAYMENT';
   } else {
     return 'SENTIMENT';
   }
