@@ -67,10 +67,12 @@ function sendRates(recipientId) {
 }
 
 function sendNextPayment(recipientId) {
-  sendMessage(recipientId, {text: "Your next payment is:"});
-  sendMessage(recipientId, {text: "Amount: $53.72"});
-  sendMessage(recipientId, {text: "Date: August 15, 2016"});
-  sendMessage(recipientId, {text: "With: Visa debit card ending in 4215"});  
+  sendMessage(recipientId, {text:
+    "Your next payment is\n"
+    + "Amount: $53.72\n"
+    + "Date: August 15, 2016\n"
+    + "With: Visa debit card ending in 4215\n"
+  });
 }
 
 function sendMessage(recipientId, message) {
