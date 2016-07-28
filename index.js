@@ -118,7 +118,17 @@ function sendNextPayment(recipientId) {
 };
 
 function sendSentiment(recipientId, message) {
-  var sentiment = 'happy!';
+  var words = message.split(" ");
+  var cumScore = 0;
+  var wordCount = 0;
+  for (var i = 0; i < words.length; i++) {
+    var word = words[i];
+    if (afinn.hasOwnProperty(word)) {
+      cumScore += afinn[word];
+      wordCount++;
+    }
+  }
+  var sentiment = 'happy!' + (cum_score * 1.0 / word_count);
   sendMessage(recipientId, {text: sentiment});
 };
 
