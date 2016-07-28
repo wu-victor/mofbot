@@ -24,8 +24,6 @@ app.get("/webhook", function (req, res) {
 
 app.post("/webhook", function (request, response) {
   var events = request.body.entry[0].messaging;
-  console.log("********* events **********");
-  console.log(events);
   for (i = 0; i < events.length; i++) {
     var event = events[i];
       if (event.message && event.message.text) {
@@ -135,11 +133,11 @@ function sendSentimentResponse(recipientId, message) {
   var sentimentResponse = "";
   if (sentimentScore <= -4.5) {
     sentimentResponse = "Terribly sorry for the poor service. Please call us at (312) 843-7692";
-  } else if ((-4.5 < sentimentScore) && (sentimentScore <= -1.0)) {
+  } else if ((-4.5 < sentimentScore) && (sentimentScore <= -0.25)) {
     sentimentResponse = "Apologize for the inconvenience. Please call us at (312) 843-7692";
-  } else if ((-1.0 < sentimentScore) && (sentimentScore <= 1.0)) {
+  } else if ((-0.25 < sentimentScore) && (sentimentScore <= 0.25)) {
     sentimentResponse = "Thank you for the feedback";
-  } else if ((1.0 < sentimentScore) && (sentimentScore <= 4.5)) {
+  } else if ((0.25 < sentimentScore) && (sentimentScore <= 4.5)) {
     sentimentResponse = "Great! Thanks for reaching out";
   } else {
     sentimentResponse = "Fantastic. We'll pass the good news along"
