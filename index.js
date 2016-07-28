@@ -128,7 +128,7 @@ function sendSentiment(recipientId, message) {
       wordCount++;
     }
   }
-  var sentiment = 'happy!' + (cum_score * 1.0 / word_count);
+  var sentiment = 'happy!' + (cumScore * 1.0 / wordCount);
   sendMessage(recipientId, {text: sentiment});
 };
 
