@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
 
 // Server frontpage
-app.get('/', function (req, res) {  
+app.get('/', function (req, res) {
   res.send('Mobile Only Financial - Facebook Messenger Bot');
 });
 
@@ -30,7 +30,7 @@ app.post('/webhook', function (request, response) {
     var event = events[i];
       if (event.message && event.message.text) {
 
-        var responseType = getResponseType(event.message);
+        var responseType = getResponseType(event.message.txt);
         if (responseType === 'RATES') {
           sendMessage(event.sender.id, {text: 'These are MOF\'s awesome rates!'});
         }
