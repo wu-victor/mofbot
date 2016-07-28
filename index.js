@@ -32,7 +32,7 @@ app.post('/webhook', function (request, response) {
         sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
       }
   }
-  res.sendStatus(200);
+  response.sendStatus(200);
 });
 
 // generic function sending messages
