@@ -1,6 +1,9 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var request = require("request");
+
+var afinn = require('afinn-111');
+
 var app = express();
 
 app.use(bodyParser.urlencoded({extended: false}));
@@ -34,7 +37,7 @@ app.post("/webhook", function (request, response) {
         } else if (responseType === "NEXT_PAYMENT") {
           sendNextPayment(event.sender.id);
         } else {
-          sendMessage(event.sender.id, {text: "Sentiment response"});
+          sendSentiment(event.sender.id, event.message.text);
         }
       } else if (event.postback) {
         var payload = event.postback.payload;
@@ -112,6 +115,11 @@ function sendNextPayment(recipientId) {
     + "Date: August 15, 2016\n"
     + "With: Visa debit card ending in 4215\n"
   });
+};
+
+function sendSentiment(recipientId, message) {
+  var sentiment = 'happy!';
+  sendMessage(recipientId, {text: sentiment});
 };
 
 function sendMessage(recipientId, message) {
