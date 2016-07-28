@@ -32,7 +32,7 @@ app.post('/webhook', function (request, response) {
 
         var responseType = responseType(event.message);
         if (responseType === 'RATES') {
-          sendMessage(event.sender.id, {text: 'These are MOF\'s awesome rates!'});  
+          sendMessage(event.sender.id, {text: 'These are MOF\'s awesome rates!'});
         }
         sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
       }
@@ -46,7 +46,7 @@ function responseType(message) {
   } else {
     return 'SENTIMENT';
   }
-}
+};
 
 // generic function sending messages
 function sendMessage(recipientId, message) {
