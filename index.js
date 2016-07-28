@@ -26,17 +26,18 @@ app.post("/webhook", function (request, response) {
   for (i = 0; i < events.length; i++) {
     var event = events[i];
       if (event.message && event.message.text) {
-
         var responseType = getResponseType(event.message.text);
         if (responseType === "RATES") {
           sendRates(event.sender.id);
-        } else if (responseType === "PAYMENT_PLAN") {
+        } else if (responseType === "DIFFICULTY") {
           sendPaymentPlan(event.sender.id);
         } else if (responseType === "NEXT_PAYMENT") {
           sendNextPayment(event.sender.id);
         } else {
           sendMessage(event.sender.id, {text: "Sentiment response"});
         }
+      } else if (event.postback) {
+          sendMessage(event.sender.id, {text: event.postback.payload});
       }
   }
   response.sendStatus(200);
@@ -46,7 +47,7 @@ function getResponseType(message) {
   if (message.toLowerCase().includes("rate") || message.toLowerCase().includes("term")) {
     return "RATES";
   } else if (message.toLowerCase().includes("can't pay") || message.toLowerCase().includes("cannot pay")) {
-    return "PAYMENT_PLAN";
+    return "DIFFICULTY";
   } else if (message.toLowerCase().includes("next payment")) {
     return "NEXT_PAYMENT";
   } else {
@@ -72,17 +73,17 @@ function sendPaymentPlan(recipientId) {
       "type": "template",
       "payload":{
         "template_type": "button",
-        "text": "We are sorry to hear that you are having financial difficulty. We can offer you a:",
+        "text": "We are sorry to hear that you are having financial difficulty. We can offer you a",
         "buttons":[
           {
-            "type": "web_url",
-            "url": "https://google.com",
-            "title": "Payment holiday"
+            "type": "postback",
+            "title": "Payment holiday",
+            "payload": "PAYMENT_HOLIDAY"
           },
           {
-            "type": "web_url",
-            "url": "https://google.com",
-            "title": "Customized payment plan"
+            "type": "postback",
+            "title": "Payment plan",
+            "payload": "PAYMENT_PLAN"
           }
         ]
       }
