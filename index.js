@@ -142,7 +142,7 @@ function sendSentimentResponse(recipientId, message) {
   } else {
     sentimentResponse = "Fantastic. We'll pass the good news along"
   }
-  sendMessage(recipientId, {text: sentimentResponse + sentimentScore + "|" + cumScore + "|" + wordCount});
+  sendMessage(recipientId, {text: sentimentResponse});
 };
 
 function sendMessage(recipientId, message) {
