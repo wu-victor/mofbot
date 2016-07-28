@@ -118,7 +118,7 @@ function sendNextPayment(recipientId) {
 };
 
 function sendSentimentResponse(recipientId, message) {
-  var words = message.split(" ");
+  var words = message.replace(/\W/g, '').toLowerCase().split(" ");
   var cumScore = 0;
   var wordCount = 0;
   for (var i = 0; i < words.length; i++) {
