@@ -33,7 +33,7 @@ app.post("/webhook", function (request, response) {
         } else if (responseType === "PAYMENT_PLAN") {
           sendMessage(event.sender.id, {text: "You have options"});
         } else if (responseType === "NEXT_PAYMENT") {
-          sendNextPayment(event.sender.id, {text: "Your next payment"});
+          sendNextPayment(event.sender.id);
         } else {
           sendMessage(event.sender.id, {text: "Sentiment response"});
         }
@@ -67,27 +67,10 @@ function sendRates(recipientId) {
 }
 
 function sendNextPayment(recipientId) {
-  var message = {
-    "attachment": {
-      "type": "template",
-      "payload": {
-        "template_type": "generic",
-        "elements": [
-          {
-            "title": "Amount",
-            "subtitle": "$53.72",
-          }, {
-            "title": "Date",
-            "subtitle": "August 15, 2016",
-          }, {
-            "title": "Payment Method",
-            "subtitle": "Visa debit card ending in 4215"
-          }
-        ]
-      }
-    }
-  };
-  sendMessage(recipientId, message);
+  sendMessage(event.sender.id, {text: "Your next payment is:"});
+  sendMessage(event.sender.id, {text: "Amount: $53.72"});
+  sendMessage(event.sender.id, {text: "Date: August 15, 2016"});
+  sendMessage(event.sender.id, {text: "With: Visa debit card ending in 4215"});  
 }
 
 function sendMessage(recipientId, message) {
