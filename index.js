@@ -31,7 +31,7 @@ app.post("/webhook", function (request, response) {
         if (responseType === "RATES") {
           sendRates(event.sender.id);
         } else if (responseType === "PAYMENT_PLAN") {
-          sendMessage(event.sender.id, {text: "You have options"});
+          sendPaymentPlan(event.sender.id);
         } else if (responseType === "NEXT_PAYMENT") {
           sendNextPayment(event.sender.id);
         } else {
@@ -63,6 +63,31 @@ function sendRates(recipientId) {
       }
     }
   };
+  sendMessage(recipientId, message);
+}
+
+function sendPaymentPlan(recipientId) {
+  var message = {
+    "attachment":{
+      "type": "template",
+      "payload":{
+        "template_type": "button",
+        "text": "We are sorry to hear that you are having financial difficulty. We can offer you a:",
+        "buttons":[
+          {
+            "type": "web_url",
+            "url": "https://google.com",
+            "title": "Payment holiday"
+          },
+          {
+            "type": "web_url",
+            "url": "https://google.com",
+            "title": "Customized payment plan"
+          }
+        ]
+      }
+    }
+  }
   sendMessage(recipientId, message);
 }
 
