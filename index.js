@@ -32,7 +32,7 @@ app.post('/webhook', function (request, response) {
 
         var responseType = getResponseType(event.message.text);
         if (responseType === 'RATES') {
-          sendMessage(event.sender.id, {text: 'These are MOF\'s awesome rates!'});
+          sendImage(event.sender.id, 'https://dl.dropboxusercontent.com/u/6677157/rates.png');
         } else if (responseType === 'PAYMENT_PLAN') {
           sendMessage(event.sender.id, {text: 'You have options'});
         } else if (responseType === 'NEXT_PAYMENT') {
@@ -46,7 +46,7 @@ app.post('/webhook', function (request, response) {
 });
 
 function getResponseType(message) {
-  if (message.toLowerCase().includes('rate')) {
+  if (message.toLowerCase().includes('rate') || message.toLowerCase().includes('term')) {
     return 'RATES';
   } else if (message.toLowerCase().includes('can\'t pay') || message.toLowerCase().includes('cannot pay')) {
     return 'PAYMENT_PLAN';
@@ -56,6 +56,18 @@ function getResponseType(message) {
     return 'SENTIMENT';
   }
 };
+
+function sendImage(recipientId, imageUrl) {
+  var message = {
+    'attachment': {
+      'type': 'image',
+      'payload': {
+        'url': imageUrl
+      }
+    }
+  }
+  sendMessage(recipientId, message);
+}
 
 // generic function sending messages
 function sendMessage(recipientId, message) {
