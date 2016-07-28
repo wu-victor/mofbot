@@ -30,7 +30,7 @@ app.post('/webhook', function (request, response) {
     var event = events[i];
       if (event.message && event.message.text) {
 
-        var responseType = getResponseType(event.message.txt);
+        var responseType = getResponseType(event.message.text);
         if (responseType === 'RATES') {
           sendMessage(event.sender.id, {text: 'These are MOF\'s awesome rates!'});
         }
